@@ -21,11 +21,13 @@ export class MemberMessagesComponent implements OnInit {
     private alertify: AlertifyService
   ) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.loadMessages();
+  }
 
   loadMessages() {
     const currentUserId = +this.authService.decodedToken.nameid;
-    this.userService
+    return this.userService
       .getMessageThread(this.authService.decodedToken.nameid, this.recipientId)
       .pipe(
         tap((messages) => {
@@ -56,7 +58,8 @@ export class MemberMessagesComponent implements OnInit {
       .sendMessage(this.authService.decodedToken.nameid, this.newMessage)
       .subscribe(
         (message: Message) => {
-          this.messages.unshift(message);
+          console.log(message);
+          this.messages?.unshift(message);
           this.newMessage.content = '';
         },
         (error) => {
